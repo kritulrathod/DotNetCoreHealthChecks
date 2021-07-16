@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DotNetCoreHealthChecks.HealthChecks;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,7 +31,8 @@ namespace DotNetCoreHealthChecks
     {
 
       services.AddControllers();
-      services.AddHealthChecks()
+      _ = services.AddHealthChecks()
+        .AddCheck<RandomResponseTimeChecker>("API Custom Health", null, new[] { "Custom API" })
         .AddCheck("API Health", () => HealthCheckResult.Healthy("DotNetCoreHealthChecks Works"));
       services.AddSwaggerGen(c =>
       {
