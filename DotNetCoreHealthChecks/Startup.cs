@@ -32,12 +32,16 @@ namespace DotNetCoreHealthChecks
 
       services.AddControllers();
       _ = services.AddHealthChecks()
-        .AddCheck<RandomResponseTimeChecker>("API Custom Health", null, new[] { "Custom API" })
+        .AddCheck<RandomResponseTimeChecker>("API Custom Health", null, new[] { "API" })
+        //TODO : Check the hints  here - https://github.com/xabaril/AspNetCore.Diagnostics.HealthChecks#UI-Storage-Providers
+        .AddCheck<RandomResponseTimeChecker>("DATABASE Custom Health", null, new[] { "DATABASE" })
         .AddCheck("API Health", () => HealthCheckResult.Healthy("DotNetCoreHealthChecks Works"));
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "DotNetCoreHealthChecks", Version = "v1" });
       });
+
+      services.AddSingleton<RandomResponseTimeChecker>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
